@@ -1,0 +1,47 @@
+<%- include('partials/header.ejs') %>
+<div class="container">
+  <div class="to-do">
+    <h1 class="mb-4">
+      <span>My ToDo List</span>
+    </h1>
+    <p class="mb-4">Today is <span class="date"><%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %> (<%= new Date().toLocaleDateString('en-US', { weekday: 'long' }) %>)</span></p>
+  </div>
+  <div class="task-container">
+    <form action="/addTask" method="post">
+      <div class="input-group mb-3">
+        <input type="text" name="taskText" class="form-control rounded-pill" placeholder="Add a new task" required>
+        <select name="taskType" class="form-control rounded-pill">
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+        </select>
+        <div class="input-group-append">
+          <button class="btn btn-darker rounded-pill" type="submit">Add Task</button>
+        </div>
+      </div>
+    </form>
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center rounded-pill">
+        <h5>Tasks</h5>
+        <select id="taskFilter" class="form-control rounded-pill">
+          <option value="all">All</option>
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+        </select>
+      </li>
+      <% tasks.forEach((task) => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center rounded-pill <%= task.completed ? 'completed' : '' %>" data-type="<%= task.type %>">
+          <span><%= task.text %></span>
+          <div>
+            <a href="/completeTask/<%= task.id %>" class="btn btn-success btn-sm rounded-pill mr-2">
+              <i class="fas fa-check"></i>
+            </a>
+            <a href="/deleteTask/<%= task.id %>" class="btn btn-danger btn-sm rounded-pill">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</div>
+<%- include('partials/footer.ejs') %>
